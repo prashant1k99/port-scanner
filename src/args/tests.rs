@@ -1,6 +1,12 @@
 use super::*;
 
 mod arguments_test {
+    // ccscan 192.10.0.1
+    // ccscan 192.0.0.1 -j=100 | mentioning the no of parellel scan
+    // ccscan 192.0.0.1 -p=8080,8000,.. | mentioning all the ports to scan
+    // ccscan 192.0.0.* | for sweep scan
+    // ccscan -h | for cli help
+
     use super::*;
 
     #[test]
@@ -15,20 +21,20 @@ mod arguments_test {
     }
 
     #[test]
-    fn test_valid_return_type() {
-        // ccscan 192.10.0.1
-        // ccscan 192.0.0.1 -j=100 | mentioning the no of parellel scan
-        // ccscan 192.0.0.1 -p=8080,8000,.. | mentioning all the ports to scan
-        // ccscan 192.0.0.* | for sweep scan
-        // ccscan -h | for cli help
+    fn test_for_host_name() {
         let result = Arguments::new(&[String::from("cli-app"), String::from("192.0.0.1")]);
         assert_eq!(
             result,
             Ok(Arguments {
                 host: IpAddr::V4("192.0.0.1".parse().unwrap()),
                 flags: None,
+                is_sweep: false
             })
         );
+    }
+
+    #[test]
+    fn test_for_j_flag() {
         let result = Arguments::new(&[
             String::from("cli-app"),
             String::from("192.0.0.1"),
@@ -42,8 +48,13 @@ mod arguments_test {
                     name: String::from("j"),
                     value: vec![String::from("100")],
                 }]),
+                is_sweep: false,
             })
         );
+    }
+
+    #[test]
+    fn test_for_port_flag() {
         let result = Arguments::new(&[
             String::from("cli-app"),
             String::from("192.0.0.1"),
@@ -57,8 +68,13 @@ mod arguments_test {
                     name: String::from("p"),
                     value: vec![String::from("8080"), String::from("8081")],
                 }]),
+                is_sweep: false,
             })
         );
+    }
+
+    #[test]
+    fn test_for_multiple_flags() {
         let result = Arguments::new(&[
             String::from("cli-app"),
             String::from("192.0.0.1"),
@@ -79,8 +95,13 @@ mod arguments_test {
                         value: vec![String::from("100")],
                     }
                 ]),
+                is_sweep: false,
             })
         );
+    }
+
+    #[test]
+    fn test_for_sweep_method() {
         let result = Arguments::new(&[String::from("cli-app"), String::from("192.0.0.*")]);
         assert_eq!(
             result.map(|mut args| {
@@ -91,22 +112,14 @@ mod arguments_test {
             }),
             Ok(Arguments {
                 host: IpAddr::V4("192.0.0.1".parse().unwrap()),
-                flags: Some({
-                    let mut flags = vec![
-                        Flags {
-                            name: String::from("p"),
-                            value: vec![String::from("8080"), String::from("8081")],
-                        },
-                        Flags {
-                            name: String::from("j"),
-                            value: vec![String::from("100")],
-                        },
-                    ];
-                    flags.sort_by(|a, b| a.name.cmp(&b.name));
-                    flags
-                }),
+                flags: None,
+                is_sweep: true,
             })
         );
+    }
+
+    #[test]
+    fn test_for_help_flag() {
         let result = Arguments::new(&[String::from("cli-app"), String::from("-h")]);
         assert_eq!(result, Err("Help flag passed"));
     }

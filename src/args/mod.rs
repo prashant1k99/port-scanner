@@ -7,6 +7,7 @@ mod tests;
 pub struct Arguments {
     pub host: IpAddr,
     pub flags: Option<Vec<Flags>>,
+    is_sweep: bool,
 }
 
 #[derive(Debug, PartialEq)]
@@ -23,6 +24,7 @@ impl Arguments {
         Ok(Arguments {
             host: IpAddr::V4(Ipv4Addr::new(127, 1, 1, 1)),
             flags: None,
+            is_sweep: false,
         })
     }
 }
