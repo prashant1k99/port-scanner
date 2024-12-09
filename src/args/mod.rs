@@ -1,4 +1,4 @@
-use std::net::{IpAddr, Ipv4Addr};
+use std::net::IpAddr;
 
 #[cfg(test)]
 mod tests;
@@ -29,14 +29,19 @@ impl Arguments {
             }
         }
 
-        if !IpAddr::V4(args[1].parse().unwrap()).is_ipv4()
-            && !IpAddr::V6(args[1].parse().unwrap()).is_ipv6()
-        {
-            println!("This is neither IPv4 or Ipv6")
-        }
+        let host: IpAddr = match args[1].parse() {
+            Ok(val) => val,
+            Err(_) => {
+                if args[1].contains("*") {
+                    // Split the arguments based on the . and try to replace the * with 1
+                    if let Ok(val) = args[1].replace("*", "1").parse() {}
+                }
+                return Err("Invalid host name");
+            }
+        };
 
         Ok(Arguments {
-            host: IpAddr::V4(Ipv4Addr::new(127, 1, 1, 1)),
+            host,
             flags: None,
             is_sweep: false,
         })

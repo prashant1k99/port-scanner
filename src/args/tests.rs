@@ -31,6 +31,8 @@ mod arguments_test {
                 is_sweep: false
             })
         );
+        let result = Arguments::new(&[String::from("cli-app"), String::from("1920.0.0.1")]);
+        assert_eq!(result, Err("Invalid host name"));
     }
 
     #[test]
