@@ -29,21 +29,25 @@ impl Arguments {
             }
         }
 
-        let host: IpAddr = match args[1].parse() {
-            Ok(val) => val,
+        match args[1].parse() {
+            Ok(host) => Ok(Arguments {
+                host,
+                flags: None,
+                is_sweep: false,
+            }),
             Err(_) => {
                 if args[1].contains("*") {
                     // Split the arguments based on the . and try to replace the * with 1
-                    if let Ok(val) = args[1].replace("*", "1").parse() {}
+                    if let Ok(val) = args[1].replace("*", "1").parse::<IpAddr>() {
+                        return Ok(Arguments {
+                            host: val,
+                            flags: None,
+                            is_sweep: true,
+                        });
+                    }
                 }
-                return Err("Invalid host name");
+                Err("Invalid host name")
             }
-        };
-
-        Ok(Arguments {
-            host,
-            flags: None,
-            is_sweep: false,
-        })
+        }
     }
 }
