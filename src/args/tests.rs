@@ -76,6 +76,23 @@ mod arguments_test {
     }
 
     #[test]
+    fn test_for_invalid_flags() {
+        let result = Arguments::new(&[
+            String::from("cli-app"),
+            String::from("192.0.0.1"),
+            String::from("-f=8080,8081"),
+        ]);
+        assert_eq!(
+            result,
+            Ok(Arguments {
+                host: IpAddr::V4("192.0.0.1".parse().unwrap()),
+                flags: None,
+                is_sweep: false,
+            })
+        );
+    }
+
+    #[test]
     fn test_for_multiple_flags() {
         let result = Arguments::new(&[
             String::from("cli-app"),
