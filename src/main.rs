@@ -1,11 +1,21 @@
-use std::env;
+use std::{env, process::exit};
+
+use port_scanner::args::Arguments;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    // 1. We take args
-    // 2. We process the args and get the appropriate value needed
-    // 3. Perform operation based on that
+    let parsed_args = Arguments::new(&args);
+    if let Err(e) = parsed_args {
+        if e == "Help flag passed" {
+            // TODO: handle help flag content
+            println!("Asking for help");
+            exit(0);
+        } else {
+            eprintln!("Error: {e}");
+            exit(1);
+        }
+    }
 
-    println!("Args: {args:#?}");
+    println!("{parsed_args:?}");
 }
