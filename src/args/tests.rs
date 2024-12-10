@@ -33,6 +33,16 @@ mod arguments_test {
         );
         let result = Arguments::new(&[String::from("cli-app"), String::from("1920.0.0.1")]);
         assert_eq!(result, Err("Invalid host name"));
+
+        let result = Arguments::new(&[String::from("cli-app"), String::from("localhost")]);
+        assert_eq!(
+            result,
+            Ok(Arguments {
+                host: IpAddr::V4("127.0.0.1".parse().unwrap()),
+                flags: None,
+                is_sweep: false
+            })
+        );
     }
 
     #[test]

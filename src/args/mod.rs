@@ -1,4 +1,4 @@
-use std::net::IpAddr;
+use std::net::{IpAddr, Ipv4Addr};
 
 #[cfg(test)]
 mod tests;
@@ -46,7 +46,14 @@ impl Arguments {
                             is_sweep: true,
                         });
                     }
+                } else if args[1] == "localhost" {
+                    return Ok(Arguments {
+                        host: IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
+                        flags: handle_arg_flags(&args[2..]),
+                        is_sweep: false,
+                    });
                 }
+
                 Err("Invalid host name")
             }
         }
