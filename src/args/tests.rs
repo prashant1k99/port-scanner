@@ -83,6 +83,13 @@ mod arguments_test {
                 is_sweep: false,
             })
         );
+
+        let result = Arguments::new(&[
+            String::from("cli-app"),
+            String::from("192.0.0.1"),
+            String::from("-p=65536"),
+        ]);
+        assert!(result.is_err());
     }
 
     #[test]
