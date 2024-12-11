@@ -41,10 +41,7 @@ impl Arguments {
                     // Split with * and for every value check which index contains *, set that as
                     // sweep_octact
                     let octets: Vec<&str> = args[1].split('.').collect();
-                    let sweep_octact = octets
-                        .iter()
-                        .position(|&x| x == "*")
-                        .map(|pos| pos as u8 + 1);
+                    let sweep_octact = octets.iter().position(|&x| x == "*").map(|pos| pos as u8);
 
                     if let Ok(val) = args[1].replacen("*", "1", 1).parse::<IpAddr>() {
                         return Ok(Arguments {
