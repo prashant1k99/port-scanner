@@ -51,7 +51,7 @@ mod test_sniffer {
             String::from("-p=80,443"),
         ])
         .unwrap();
-        let result = Sniffer::scan(ip_args);
+        let result = Sniffer::scan(&ip_args);
 
         server.kill();
 
@@ -67,7 +67,7 @@ mod test_sniffer {
         let server = TestServer::new(&ports);
 
         let ip_args = Arguments::new(&[String::from("cli-app"), String::from(ip)]).unwrap();
-        let result = Sniffer::scan(ip_args);
+        let result = Sniffer::scan(&ip_args);
 
         drop(server);
 
@@ -81,7 +81,7 @@ mod test_sniffer {
         let ports = vec![8080];
 
         let ip_args = Arguments::new(&[String::from("cli-app"), String::from(ip)]).unwrap();
-        let result = Sniffer::scan(ip_args);
+        let result = Sniffer::scan(&ip_args);
 
         assert_eq!(result.unwrap().open_ports, ports)
     }

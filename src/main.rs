@@ -19,11 +19,16 @@ fn main() {
         }
     };
     if parsed_args.is_sweep_scan() {
+
+        // TODO: Need to handle sweep functionality
     } else {
         let open_ports = Sniffer::scan(&parsed_args).unwrap();
-
-        for port in open_ports.list() {
-            println!("Open = {}:{}", parsed_args.host, port)
+        if parsed_args.is_result_print() {
+            println!("Open: {:?}", open_ports.list());
+        } else {
+            for port in open_ports.list() {
+                println!("Open = {}:{}", parsed_args.host, port)
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ mod arguments_test {
             Ok(Arguments {
                 host: IpAddr::V4("192.0.0.1".parse().unwrap()),
                 flags: None,
-                is_sweep: false
+                sweep_octact: None
             })
         );
         let result = Arguments::new(&[String::from("cli-app"), String::from("1920.0.0.1")]);
@@ -40,7 +40,7 @@ mod arguments_test {
             Ok(Arguments {
                 host: IpAddr::V4("127.0.0.1".parse().unwrap()),
                 flags: None,
-                is_sweep: false
+                sweep_octact: None
             })
         );
 
@@ -66,7 +66,7 @@ mod arguments_test {
                     name: String::from("j"),
                     value: vec![String::from("100")],
                 }]),
-                is_sweep: false,
+                sweep_octact: None,
             })
         );
     }
@@ -86,7 +86,7 @@ mod arguments_test {
                     name: String::from("p"),
                     value: vec![String::from("8080"), String::from("8081")],
                 }]),
-                is_sweep: false,
+                sweep_octact: None,
             })
         );
 
@@ -110,7 +110,7 @@ mod arguments_test {
             Ok(Arguments {
                 host: IpAddr::V4("192.0.0.1".parse().unwrap()),
                 flags: None,
-                is_sweep: false,
+                sweep_octact: None,
             })
         );
     }
@@ -137,7 +137,7 @@ mod arguments_test {
                         value: vec![String::from("100")],
                     }
                 ]),
-                is_sweep: false,
+                sweep_octact: None,
             })
         );
     }
@@ -155,7 +155,7 @@ mod arguments_test {
             Ok(Arguments {
                 host: IpAddr::V4("192.0.0.1".parse().unwrap()),
                 flags: None,
-                is_sweep: true,
+                sweep_octact: Some(4),
             })
         );
     }

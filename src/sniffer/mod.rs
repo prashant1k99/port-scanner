@@ -73,7 +73,7 @@ impl Sniffer {
 }
 
 fn is_port_open(ip: IpAddr, port: i32, tx: mpsc::Sender<i32>) {
-    println!("Scanning {ip}:{port}");
+    // println!("Scanning {ip}:{port}");
     if TcpStream::connect(format!("{}:{}", ip, port)).is_ok() {
         tx.send(port).unwrap();
     }
