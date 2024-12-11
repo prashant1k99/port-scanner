@@ -58,6 +58,37 @@ impl Arguments {
             }
         }
     }
+
+    pub fn get_port(&self) -> Option<Vec<i32>> {
+        if let Some(flags) = &self.flags {
+            for flag in flags {
+                if flag.name == "p" {
+                    return Some(
+                        flag.value
+                            .iter()
+                            .filter_map(|v| v.parse::<i32>().ok())
+                            .collect(),
+                    );
+                }
+            }
+        }
+        None
+    }
+
+    pub fn get_thread_counts(&self) -> Option<usize> {
+        if let Some(flags) = &self.flags {
+            for flag in flags {
+                if flag.name == "j" {
+                    return flag.value.first()?.parse::<usize>().ok();
+                }
+            }
+        }
+        None
+    }
+
+    pub fn is_sweep_scan(&self) -> bool {
+        self.is_sweep
+    }
 }
 
 const SUPPORTED_FLAGS: [&str; 2] = ["-j", "-p"];
